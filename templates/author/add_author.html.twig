@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Добавить{% endblock %}
+
+{% block main_cont %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <h1>Добавить нового автора</h1>
+
+    {{ include('author/_form.html.twig') }}
+    {% else%}
+        <p>Вы не авторизованы</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block main_cont %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <table>
+        <tbody>
+        {% for author in authors %}
+            <tr>
+                <td>{{ author.id }}</td>
+                <td>{{ author.name }}</td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">Записи не найдены!</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>Вы не авторизованы</p>
+    {% endif %}
+{% endblock %}
