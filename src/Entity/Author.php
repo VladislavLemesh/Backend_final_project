@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
+use App\Repository\AuthorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CategoryRepository::class)]
-class Category
+#[ORM\Entity(repositoryClass: AuthorRepository::class)]
+class Author
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -16,14 +16,14 @@ class Category
     private $id;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $title;
+    private $name;
 
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Video::class)]
+    #[ORM\ManyToMany(targetEntity: Video::class, inversedBy: 'authors')]
     private $videos;
 
     public function __toString()
     {
-        return $this->title;
+        return $this->name;
     }
 
     public function __construct()
@@ -36,14 +36,14 @@ class Category
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): self
+    public function setName(string $name): self
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -60,7 +60,6 @@ class Category
     {
         if (!$this->videos->contains($video)) {
             $this->videos[] = $video;
-            $video->setCategory($this);
         }
 
         return $this;
@@ -68,12 +67,7 @@ class Category
 
     public function removeVideo(Video $video): self
     {
-        if ($this->videos->removeElement($video)) {
-            // set the owning side to null (unless already changed)
-            if ($video->getCategory() === $this) {
-                $video->setCategory(null);
-            }
-        }
+        $this->videos->removeElement($video);
 
         return $this;
     }

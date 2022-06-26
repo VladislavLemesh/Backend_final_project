@@ -30,6 +30,15 @@ class VideoRepository extends ServiceEntityRepository
         ->getResult();
     }
 
+    public function findAllWithAuthors()
+    {
+      return $this->createQueryBuilder('v')
+        ->select('v, c')
+        ->join('v.authors', 'c')
+        ->getQuery()
+        ->getResult();
+    }
+
     public function findByCategory($category_id)
     {
       return $this->createQueryBuilder('v')
