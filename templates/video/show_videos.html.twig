@@ -6,7 +6,13 @@
 	{% for video in videos %}
 		Название: {{ video.title }}<br>
 		Категория: {{ video.category.title }}<br>
-		<iframe src="https://www.youtube.com/embed/{{ video.youtubeId }}"></iframe><br>
+		Авторы:
+		{% for vidauthor in video.getAuthors %}
+			{{ vidauthor }}
+		{% endfor %}<br>
+
+		<iframe src="https://www.youtube.com/embed/{{ video.youtubeId }}"></iframe>
+		<a href="{{ path('app_video_edit', {'id': video.id}) }}">Редактировать</a><br>
 	{% endfor %}
 	{% else %}
 	<p>Вы не авторизованы</p>
